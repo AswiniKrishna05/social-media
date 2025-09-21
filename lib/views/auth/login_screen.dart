@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../viewmodels/auth_viewmodel.dart';
 import 'signup_screen.dart';
-import '../home/feed_screen.dart';
+import '../main_navigation_screen.dart';
 
 /// Login screen for user authentication
 class LoginScreen extends StatefulWidget {
@@ -36,7 +36,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
       if (authViewModel.isAuthenticated && mounted) {
         Navigator.of(context).pushReplacement(
-          MaterialPageRoute(builder: (context) => const FeedScreen()),
+          MaterialPageRoute(builder: (context) => const MainNavigationScreen()),
         );
       } else if (authViewModel.errorMessage != null && mounted) {
         ScaffoldMessenger.of(context).showSnackBar(

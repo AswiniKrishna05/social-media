@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import '../models/user.dart';
 import '../models/post.dart';
+import 'instagram_config.dart';
 
 /// Instagram API service using Mockoon mock data
 class InstagramApiService {
@@ -11,9 +12,18 @@ class InstagramApiService {
   /// Fetch recent media from Instagram API
   static Future<List<Post>> fetchRecentMedia() async {
     try {
-      // Use the geographies endpoint to get recent media
+      // Check if API is available based on current configuration
+      final isAvailable = await isApiAvailable();
+      
+      if (!isAvailable) {
+        // Use mock data if API is not available
+        return getMockInstagramData();
+      }
+      
+      // Use the configured base URL
+      final baseUrl = InstagramConfig.baseUrl;
       final response = await http.get(
-        Uri.parse('$_baseUrl/geographies/1/media/recent'),
+        Uri.parse('$baseUrl/geographies/1/media/recent'),
         headers: {
           'Content-Type': 'application/json',
         },
@@ -36,8 +46,18 @@ class InstagramApiService {
   /// Fetch user's media
   static Future<List<Post>> fetchUserMedia(String userId) async {
     try {
+      // Check if API is available based on current configuration
+      final isAvailable = await isApiAvailable();
+      
+      if (!isAvailable) {
+        // Use mock data if API is not available
+        return getMockInstagramData();
+      }
+      
+      // Use the configured base URL
+      final baseUrl = InstagramConfig.baseUrl;
       final response = await http.get(
-        Uri.parse('$_baseUrl/users/$userId/media/recent'),
+        Uri.parse('$baseUrl/users/$userId/media/recent'),
         headers: {
           'Content-Type': 'application/json',
         },
@@ -243,31 +263,13 @@ class InstagramApiService {
 
   /// Check if Instagram API is available
   static Future<bool> isApiAvailable() async {
-    try {
-      final response = await http.get(
-        Uri.parse('$_baseUrl/geographies/1/media/recent'),
-        headers: {'Content-Type': 'application/json'},
-      ).timeout(const Duration(seconds: 5));
-      
-      return response.statusCode == 200;
-    } catch (e) {
-      return false;
-    }
+    return await InstagramConfig.isApiAvailable();
   }
 
   /// Get API status information
   static Future<Map<String, dynamic>> getApiStatus() async {
     try {
-      final isAvailable = await isApiAvailable();
-      return {
-        'status': isAvailable ? 'online' : 'offline',
-        'baseUrl': _baseUrl,
-        'lastChecked': DateTime.now().toIso8601String(),
-        'endpoints': {
-          'recentMedia': '$_baseUrl/geographies/1/media/recent',
-          'userMedia': '$_baseUrl/users/{user-id}/media/recent',
-        },
-      };
+      return await InstagramConfig.getApiStatus();
     } catch (e) {
       return {
         'status': 'error',

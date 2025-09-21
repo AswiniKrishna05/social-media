@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../viewmodels/auth_viewmodel.dart';
 import 'auth/login_screen.dart';
-import 'home/feed_screen.dart';
+import 'main_navigation_screen.dart';
 
 /// Splash screen that checks authentication state and navigates accordingly
 class SplashScreen extends StatefulWidget {
@@ -30,7 +30,7 @@ class _SplashScreenState extends State<SplashScreen> {
       if (mounted) {
         if (authViewModel.isAuthenticated) {
           Navigator.of(context).pushReplacement(
-            MaterialPageRoute(builder: (context) => const FeedScreen()),
+            MaterialPageRoute(builder: (context) => const MainNavigationScreen()),
           );
         } else {
           Navigator.of(context).pushReplacement(

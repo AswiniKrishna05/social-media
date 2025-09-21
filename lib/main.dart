@@ -1,25 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'services/hive_service.dart';
-import 'services/mock_data_service.dart';
 import 'viewmodels/auth_viewmodel.dart';
 import 'viewmodels/post_viewmodel.dart';
-import 'viewmodels/api_post_viewmodel.dart';
 import 'viewmodels/instagram_viewmodel.dart';
 import 'views/splash_screen.dart';
 import 'views/auth/login_screen.dart';
-import 'views/home/feed_screen.dart';
-import 'views/home/api_feed_screen.dart';
-import 'views/home/instagram_feed_screen.dart';
+import 'views/main_navigation_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   
   // Initialize Hive
   await HiveService.init();
-  
-  // Initialize mock data for demonstration
-  // await MockDataService.initializeMockData();
   
   runApp(const SocialMediaApp());
 }
@@ -33,7 +26,6 @@ class SocialMediaApp extends StatelessWidget {
       providers: [
         ChangeNotifierProvider(create: (_) => AuthViewModel()),
         ChangeNotifierProvider(create: (_) => PostViewModel()),
-        ChangeNotifierProvider(create: (_) => ApiPostViewModel()),
         ChangeNotifierProvider(create: (_) => InstagramViewModel()),
       ],
       child: MaterialApp(
@@ -70,9 +62,7 @@ class SocialMediaApp extends StatelessWidget {
         home: const SplashScreen(),
         routes: {
           '/login': (context) => const LoginScreen(),
-          '/feed': (context) => const FeedScreen(),
-          // '/api-feed': (context) => const ApiFeedScreen(),
-          '/instagram-feed': (context) => const InstagramFeedScreen(),
+          '/main': (context) => const MainNavigationScreen(),
         },
       ),
     );

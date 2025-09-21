@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../viewmodels/auth_viewmodel.dart';
-import '../home/feed_screen.dart';
 
 /// Sign up screen for user registration
 class SignupScreen extends StatefulWidget {
@@ -40,9 +39,9 @@ class _SignupScreenState extends State<SignupScreen> {
       );
 
       if (authViewModel.isAuthenticated && mounted) {
-        Navigator.of(context).pushReplacement(
-          MaterialPageRoute(builder: (context) => const FeedScreen()),
-        );
+        // Navigator.of(context).pushReplacement(
+        //   // MaterialPageRoute(builder: (context) => const FeedScreen()),
+        // );
       } else if (authViewModel.errorMessage != null && mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
